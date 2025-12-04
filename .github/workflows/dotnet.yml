@@ -62,4 +62,18 @@ jobs:
    #     # If true, hidden files will be included in the artifact. If false, hidden files will be excluded from the artifact.
     
    #     include-hidden-files: # optional, default is false
-          
+  deploy: 
+    runs-on: ubuntu-latest
+    needs: build 
+    steps:
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v4.1.8
+      with:
+        name: webapp
+        path: webapp
+    - name: Deploy web app
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: GitHubApp-57269538
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
+        package: webapp          
